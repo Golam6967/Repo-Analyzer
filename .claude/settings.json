@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(cd \"d:\\\\InternShipProjects\\\\repo-visualizer\\\\backend\"; $env:PRISMA_USER_CONSENT_FOR_DANGEROUS_AI_ACTION=\"yes\"; npx prisma migrate reset --force)",
+      "PowerShell(Get-ChildItem -Path \"d:\\\\InternShipProjects\\\\repo-visualizer\" | Select-Object Name, @{Name=\"Type\";Expression={if\\($_.PSIsContainer\\){\"Dir\"}else{\"File\"}}} | Format-Table -AutoSize)",
+      "PowerShell(Get-ChildItem -Path \"d:\\\\InternShipProjects\\\\repo-visualizer\\\\backend\\\\src\" -Recurse -Directory | ForEach-Object { $_.FullName.Replace\\(\"d:\\\\InternShipProjects\\\\repo-visualizer\\\\backend\\\\src\\\\\", \"\"\\) })",
+      "PowerShell(Get-ChildItem -Path \"d:\\\\InternShipProjects\\\\repo-visualizer\\\\frontend\\\\src\" -Recurse -Directory | ForEach-Object { $_.FullName.Replace\\(\"d:\\\\InternShipProjects\\\\repo-visualizer\\\\frontend\\\\src\\\\\", \"\"\\) })",
+      "Bash(dir /s /b)",
+      "PowerShell(Get-ChildItem -Path \"d:\\\\InternShipProjects\\\\repo-visualizer\" -Recurse -File -Exclude \"node_modules\" | Where-Object { $_.Directory -notmatch \"node_modules\" } | Select-Object -ExpandProperty FullName | Sort-Object)",
+      "Bash(npm run *)",
+      "Read(//c/Users/Musabbereen/.claude/projects/d--InternShipProjects-repo-visualizer/memory/**)"
+    ]
+  }
+}

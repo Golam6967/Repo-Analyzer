@@ -1,0 +1,40 @@
+# --- Dependency Directories ---
+node_modules/
+.env
+.venv/
+env/
+venv/
+pip-selfcheck.json
+
+# --- Build & Output ---
+dist/
+build/
+out/
+.next/
+*.log
+*.sqlite
+*.sqlite-journal
+
+# --- IDE & OS Metadata ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# --- Docker & DevOps ---
+.docker/
+*.pem
+*.key
+.terraform/
+.terraform.lock.hcl
+
+# --- Language Specific ---
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Next.js / React
+.eslintcache
+.swc/

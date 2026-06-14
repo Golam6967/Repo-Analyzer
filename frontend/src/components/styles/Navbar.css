@@ -1,0 +1,409 @@
+/* ─── Ghost / Spectral Navbar ──────────────────────────────── */
+
+/* ── Entrance animations ── */
+@keyframes floatIn {
+  from { opacity: 0; transform: translateY(-30px) rotateX(18deg); }
+  to   { opacity: 1; transform: translateY(0)     rotateX(0deg);  }
+}
+
+@keyframes shadowPulse {
+  0%, 100% { opacity: 0.6; transform: translateX(-50%) scaleX(1);    }
+  50%       { opacity: 1;   transform: translateX(-50%) scaleX(1.07); }
+}
+
+@keyframes linkFadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@keyframes ghostScan {
+  0%,  38% { transform: translateX(-120%); opacity: 0;   }
+  40%       { opacity: 0.5; }
+  78%       { opacity: 0.5; transform: translateX(220%);  }
+  80%, 100% { opacity: 0;   transform: translateX(220%);  }
+}
+
+@keyframes logoPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(180,125,255,0), 0 0 8px rgba(180,125,255,0.4); }
+  50%       { box-shadow: 0 0 0 4px rgba(180,125,255,0.08), 0 0 20px rgba(180,125,255,0.7); }
+}
+
+@keyframes ghostFlicker {
+  0%, 92%, 96%, 100% { opacity: 1; }
+  93%                 { opacity: 0.7; }
+  95%                 { opacity: 0.85; }
+}
+
+/* ── Wrapper & shadow ── */
+.navbar-3d-wrapper {
+  position: fixed;
+  top: 20px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  transform-style: preserve-3d;
+  animation: floatIn 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+  z-index: 50;
+}
+
+.navbar-3d-shadow {
+  position: absolute;
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 22px;
+  background: radial-gradient(ellipse, rgba(139,77,224,0.28) 0%, transparent 80%);
+  filter: blur(8px);
+  pointer-events: none;
+  animation: shadowPulse 3s ease-in-out infinite;
+}
+
+/* ── Main bar ── */
+.navbar-3d {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  height: 58px;
+  border-radius: 14px;
+  border-top:    1px solid rgba(180,125,255,0.22);
+  border-left:   1px solid rgba(180,125,255,0.12);
+  border-right:  1px solid rgba(180,125,255,0.12);
+  border-bottom: 1px solid rgba(139,77,224,0.15);
+  transform-style: preserve-3d;
+  box-shadow:
+    0 0 0 1px rgba(139,77,224,0.10),
+    0 4px 0 0 rgba(12,5,24,0.9),
+    0 8px 0 0 rgba(5,2,9,0.6),
+    inset 0 1px 0 rgba(180,125,255,0.15),
+    inset 0 -1px 0 rgba(0,0,0,0.6),
+    0 12px 40px rgba(0,0,0,0.95),
+    0 0 60px rgba(139,77,224,0.06);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  /* CSS custom props for mouse spotlight */
+  --mx: 50%;
+  --my: 50%;
+}
+
+/* Mouse spotlight */
+.navbar-3d::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  background:
+    radial-gradient(
+      280px circle at var(--mx) var(--my),
+      rgba(180,125,255,0.09) 0%,
+      transparent 75%
+    ),
+    linear-gradient(180deg, rgba(180,125,255,0.05) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Ghost scan line sweep */
+.navbar-3d::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 55%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent 0%, rgba(180,125,255,0.05) 50%, transparent 100%);
+  animation: ghostScan 7s ease-in-out infinite;
+  pointer-events: none;
+  border-radius: 14px;
+  z-index: 0;
+}
+
+.navbar-3d:hover {
+  transform: translateY(-2px) rotateX(1deg);
+  box-shadow:
+    0 0 0 1px rgba(139,77,224,0.18),
+    0 6px 0 0 rgba(12,5,24,0.9),
+    0 10px 0 0 rgba(5,2,9,0.6),
+    inset 0 1px 0 rgba(180,125,255,0.22),
+    inset 0 -1px 0 rgba(0,0,0,0.6),
+    0 20px 60px rgba(0,0,0,0.98),
+    0 0 80px rgba(139,77,224,0.12);
+}
+
+/* 3-D depth layers */
+.navbar-3d-depth-1 {
+  position: absolute;
+  bottom: -4px;
+  left: 4px;
+  right: 4px;
+  height: 8px;
+  border-radius: 0 0 12px 12px;
+  background: var(--g2);
+  border: 1px solid rgba(139,77,224,0.08);
+  border-top: none;
+  z-index: -1;
+}
+
+.navbar-3d-depth-2 {
+  position: absolute;
+  bottom: -8px;
+  left: 8px;
+  right: 8px;
+  height: 8px;
+  border-radius: 0 0 10px 10px;
+  background: var(--g1);
+  border: 1px solid rgba(139,77,224,0.04);
+  border-top: none;
+  z-index: -2;
+}
+
+/* ── Logo ── */
+.logo-text-3d {
+  font-family: "Space Mono", monospace;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--ga);
+  text-shadow:
+    0 0 12px rgba(180,125,255,0.6),
+    0 0 24px rgba(139,77,224,0.3);
+  text-transform: uppercase;
+  animation: ghostFlicker 8s ease-in-out infinite;
+}
+
+.logo-icon-wrap {
+  border: 1.5px solid rgba(180,125,255,0.35);
+  padding: 5px;
+  border-radius: 8px;
+  color: var(--ga);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: logoPulse 3s ease-in-out infinite;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.logo-icon-wrap:hover {
+  background: rgba(180,125,255,0.08);
+  border-color: var(--ga);
+}
+
+/* ── Nav links ── */
+.nav-links-3d {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Sliding active indicator */
+.nav-indicator {
+  position: absolute;
+  bottom: -1px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--ga), transparent);
+  box-shadow: 0 0 8px var(--ga), 0 0 18px rgba(180,125,255,0.5);
+  border-radius: 1px;
+  transition:
+    left  0.38s cubic-bezier(0.22, 1, 0.36, 1),
+    width 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.25s;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.nav-link-3d {
+  position: relative;
+  padding: 7px 16px;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: rgba(212,170,255,0.45);
+  text-decoration: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s, border-color 0.2s;
+  border: 1px solid transparent;
+  background: transparent;
+  z-index: 1;
+}
+
+/* Hover glow orb behind link */
+.nav-link-3d::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  background: radial-gradient(
+    60px circle at 50% 50%,
+    rgba(180,125,255,0.12),
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.nav-link-3d:hover {
+  color: var(--gb);
+  background: rgba(180,125,255,0.07);
+  border-color: rgba(180,125,255,0.18);
+  text-shadow: 0 0 8px rgba(180,125,255,0.5);
+}
+
+.nav-link-3d:hover::before { opacity: 1; }
+
+.nav-link-3d.active-3d {
+  color: var(--ga);
+  background: rgba(180,125,255,0.10);
+  border-color: rgba(180,125,255,0.25);
+  text-shadow: 0 0 10px rgba(180,125,255,0.65);
+  box-shadow:
+    0 2px 0 rgba(180,125,255,0.08),
+    inset 0 1px 0 rgba(180,125,255,0.12);
+}
+
+/* ── Separator ── */
+.nav-separator {
+  width: 1px;
+  height: 24px;
+  background: linear-gradient(180deg, transparent, rgba(180,125,255,0.25), transparent);
+  margin: 0 6px;
+  flex-shrink: 0;
+}
+
+/* ── Icon buttons ── */
+.icon-btn-3d {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid rgba(180,125,255,0.20);
+  background: rgba(20,8,41,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  box-shadow: 0 2px 0 var(--g1), inset 0 1px 0 rgba(180,125,255,0.08);
+  color: rgba(180,125,255,0.6);
+  z-index: 1;
+}
+
+.icon-btn-3d:hover {
+  background: rgba(180,125,255,0.12);
+  border-color: rgba(180,125,255,0.40);
+  transform: translateY(-1px);
+  box-shadow:
+    0 3px 0 var(--g1),
+    0 0 16px rgba(180,125,255,0.18),
+    inset 0 1px 0 rgba(180,125,255,0.15);
+  color: var(--ga);
+}
+
+/* ── Auth buttons ── */
+.auth-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  animation: linkFadeIn 0.6s 0.44s both;
+  z-index: 1;
+}
+
+.signin-btn {
+  background: transparent;
+  border: 1px solid rgba(180,125,255,0.28);
+  color: rgba(212,170,255,0.75);
+  box-shadow: inset 0 1px 0 rgba(180,125,255,0.08);
+}
+
+.signin-btn:hover,
+.signin-btn.open {
+  background: rgba(180,125,255,0.08);
+  border-color: rgba(180,125,255,0.45);
+  color: var(--gb);
+  text-shadow: 0 0 8px rgba(180,125,255,0.5);
+  box-shadow: 0 0 16px rgba(180,125,255,0.12), inset 0 1px 0 rgba(180,125,255,0.12);
+}
+
+.signup-btn {
+  background: var(--g5);
+  border-top:    1px solid rgba(180,125,255,0.40);
+  border-left:   1px solid rgba(180,125,255,0.22);
+  border-right:  1px solid rgba(180,125,255,0.22);
+  border-bottom: 1px solid var(--g3);
+  color: var(--gb);
+  box-shadow:
+    0 3px 0 var(--g2),
+    0 5px 0 rgba(0,0,0,0.5),
+    inset 0 1px 0 rgba(180,125,255,0.25);
+  text-shadow: 0 0 8px rgba(180,125,255,0.6);
+}
+
+.signup-btn:hover,
+.signup-btn.open {
+  background: var(--g6);
+  transform: translateY(-1px);
+  box-shadow:
+    0 4px 0 var(--g2),
+    0 7px 0 rgba(0,0,0,0.5),
+    0 0 24px rgba(180,125,255,0.22),
+    inset 0 1px 0 rgba(180,125,255,0.35);
+}
+
+.signup-btn:active,
+.signin-btn:active { transform: translateY(1px); }
+
+/* ── Dropdown ── */
+.dropdown-wrapper { position: relative; }
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 200px;
+  background: var(--g3);
+  border: 1px solid rgba(180,125,255,0.22);
+  border-radius: 10px;
+  padding: 8px;
+  box-shadow:
+    0 4px 0 var(--g1),
+    0 8px 0 rgba(5,2,9,0.6),
+    0 16px 40px rgba(0,0,0,0.9),
+    inset 0 1px 0 rgba(180,125,255,0.12);
+  z-index: 100;
+  animation: dropdownIn 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes dropdownIn {
+  from { opacity: 0; transform: translateY(-8px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+
+/* ── Current page badge ── */
+.navbar-page-badge {
+  font-family: "Space Mono", monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(180,125,255,0.45);
+  border: 1px solid rgba(180,125,255,0.15);
+  padding: 2px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  z-index: 1;
+}

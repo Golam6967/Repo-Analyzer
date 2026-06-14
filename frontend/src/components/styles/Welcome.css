@@ -1,0 +1,82 @@
+/* Import global fonts */
+@import url("https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap");
+
+/* ─── Ghost / Spectral Theme Variables ─────────────────────── */
+:root {
+  /* Purple-void scale  (g0 = deepest void, gb = lightest lavender) */
+  --g0: #000000;
+  --g1: #050209;
+  --g2: #0c0518;
+  --g3: #140829;
+  --g4: #1e0d3c;
+  --g5: #2b1258;
+  --g6: #3a1a78;
+  --g7: #4f249e;
+  --g8: #6b33c4;
+  --g9: #8b4de0;
+  --ga: #b47dff;
+  --gb: #d4aaff;
+
+  /* Semantic colour tokens */
+  --color-background-primary:   #08050f;
+  --color-background-secondary: #100d1a;
+  --color-background-tertiary:  #181324;
+  --color-border-primary:       #2d2340;
+  --color-border-secondary:     #1e1830;
+  --color-border-tertiary:      #100d1a;
+  --color-text-primary:         #e8e0f5;
+  --color-text-secondary:       #8070a0;
+  --color-text-muted:           #4a3d60;
+  --color-text-danger:          #ff4455;
+  --color-text-success:         #5affb8;
+  --color-accent:               #b47dff;
+}
+
+body {
+  background: #08050f;
+  color: #e8e0f5;
+}
+
+/* Welcome Page Layout */
+.welcome-container {
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(107,51,196,0.25) 0%, transparent 55%),
+    radial-gradient(ellipse at 70% 80%, rgba(43,18,88,0.30) 0%, transparent 55%),
+    radial-gradient(circle at center, #0c0518 0%, #050209 65%, #000000 100%);
+  color: white;
+  font-family: "Rajdhani", sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+  padding-top: 60px;
+  z-index: 10;
+  position: relative;
+}
+
+.welcome-title {
+  font-size: 4rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-shadow:
+    0 0 30px rgba(180,125,255,0.7),
+    0 0 60px rgba(107,51,196,0.4);
+  margin-bottom: 1rem;
+  color: var(--ga);
+}
+
+.welcome-subtitle {
+  font-size: 1.2rem;
+  color: rgba(212,170,255,0.5);
+  max-width: 600px;
+  font-family: "Space Mono", monospace;
+}
