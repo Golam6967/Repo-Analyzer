@@ -17,10 +17,11 @@ function parseRepoFromUrl(url) {
 }
 
 const TABS = [
-  { to: "/analyzer",         label: "Graph",    end: true },
-  { to: "/analyzer/visual",  label: "Visual"            },
-  { to: "/analyzer/metrics", label: "Metrics"           },
-  { to: "/analyzer/tools",   label: "Tools"             },
+  { to: "/analyzer",         label: "Graph",     end: true },
+  { to: "/analyzer/visual",  label: "Visual"              },
+  { to: "/analyzer/metrics", label: "Metrics"             },
+  { to: "/analyzer/tools",   label: "Tools"               },
+  { to: "/analyzer/impact",  label: "PR Impact"           },
 ];
 
 const RepoAnalyzer = () => {

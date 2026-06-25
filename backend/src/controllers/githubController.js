@@ -1,4 +1,8 @@
+const NodeCache = require("node-cache");
+const cache = new NodeCache({ stdTTL: 600 });
+
 const {
+  octokit,
   getRepoDetails,
   getRepoFileTree,
   fetchFileContents,
@@ -78,9 +82,12 @@ const getFileCommitsController = asyncHandler(async (req, res) => {
   const parsed = parseGitHubUrl(repoUrl);
   if (!parsed) { const err = new Error("Invalid repository URL"); err.statusCode = 400; throw err; }
   const { owner, repo } = parsed;
+
+  const cacheKey = `commits:${owner}/${repo}:${filePath}`;
+  const cached = cache.get(cacheKey);
+  if (cached) return res.json({ success: true, data: cached });
+
   const branch = parsed.branch || await getDefaultBranch(owner, repo);
-  const { Octokit } = require("octokit");
-  const octokit = new (require("octokit").Octokit)({ auth: process.env.GITHUB_TOKEN });
 
   const { data: commits } = await octokit.rest.repos.listCommits({
     owner, repo, path: filePath, per_page: 50,
@@ -103,7 +110,9 @@ const getFileCommitsController = asyncHandler(async (req, res) => {
     })
   );
 
-  res.json({ success: true, data: results.filter(Boolean).reverse() });
+  const data = results.filter(Boolean).reverse();
+  cache.set(cacheKey, data);
+  res.json({ success: true, data });
 });
 
 const getChurnController = asyncHandler(async (req, res) => {
@@ -111,8 +120,10 @@ const getChurnController = asyncHandler(async (req, res) => {
   const parsed = parseGitHubUrl(repoUrl);
   if (!parsed) { const err = new Error("Invalid repository URL"); err.statusCode = 400; throw err; }
   const { owner, repo } = parsed;
-  const { Octokit } = require("octokit");
-  const octokit = new (require("octokit").Octokit)({ auth: process.env.GITHUB_TOKEN });
+
+  const cacheKey = `churn:${owner}/${repo}`;
+  const cached = cache.get(cacheKey);
+  if (cached) return res.json({ success: true, data: cached });
 
   const { data: commits } = await octokit.rest.repos.listCommits({ owner, repo, per_page: 50 });
 
@@ -126,7 +137,52 @@ const getChurnController = asyncHandler(async (req, res) => {
     } catch { /* skip */ }
   }));
 
+  cache.set(cacheKey, churnMap);
   res.json({ success: true, data: churnMap });
+});
+
+const getPRImpactController = asyncHandler(async (req, res) => {
+  const { repoUrl, pr } = req.query;
+  const parsed = parseGitHubUrl(repoUrl);
+  if (!parsed) { const err = new Error("Invalid repository URL"); err.statusCode = 400; throw err; }
+  const { owner, repo } = parsed;
+  const prNum = parseInt(pr, 10);
+  if (!prNum || prNum < 1) { const err = new Error("Invalid PR number"); err.statusCode = 400; throw err; }
+
+  const cacheKey = `pr-impact:${owner}/${repo}:${prNum}`;
+  const cached = cache.get(cacheKey);
+  if (cached) return res.json({ success: true, data: cached });
+
+  const { data: prData } = await octokit.rest.pulls.get({ owner, repo, pull_number: prNum });
+
+  const files = [];
+  for (let page = 1; files.length < 300; page++) {
+    const { data } = await octokit.rest.pulls.listFiles({ owner, repo, pull_number: prNum, per_page: 100, page });
+    files.push(...data);
+    if (data.length < 100) break;
+  }
+
+  const data = {
+    prNumber: prNum,
+    prTitle: prData.title,
+    prUrl: prData.html_url,
+    prState: prData.state,
+    prAuthor: prData.user?.login,
+    baseBranch: prData.base?.ref,
+    headBranch: prData.head?.ref,
+    totalAdditions: prData.additions,
+    totalDeletions: prData.deletions,
+    changedFiles: files.map(f => ({
+      filename: f.filename,
+      status: f.status,
+      additions: f.additions,
+      deletions: f.deletions,
+      changes: f.changes,
+    })),
+  };
+
+  cache.set(cacheKey, data);
+  res.json({ success: true, data });
 });
 
 module.exports = {
@@ -137,4 +193,5 @@ module.exports = {
   analyzeRepoController,
   getFileCommitsController,
   getChurnController,
+  getPRImpactController,
 };

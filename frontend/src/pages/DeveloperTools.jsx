@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useOutletContext } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import { diffLines } from 'diff';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github-dark.css';
@@ -39,7 +40,7 @@ function Annotations({ nodes }) {
     const encoded = btoa(JSON.stringify(annotations));
     const url = `${window.location.origin}${window.location.pathname}#annotations=${encoded}`;
     navigator.clipboard.writeText(url).catch(() => {});
-    alert('URL copied to clipboard!');
+    toast.success('URL copied to clipboard!');
   };
 
   const sorted = Object.values(annotations).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
@@ -311,7 +312,7 @@ function KeyboardShortcutsPanel() {
 function ArchitectureExport({ nodes }) {
   const exportSVG = () => {
     const svgEl = document.querySelector('.dependency-graph-svg') || document.querySelector('svg');
-    if (!svgEl) { alert('No graph SVG found. Go to the Graph tab first.'); return; }
+    if (!svgEl) { toast.error('No graph SVG found. Go to the Graph tab first.'); return; }
     const clone = svgEl.cloneNode(true);
     clone.insertAdjacentHTML('afterbegin', '<rect width="100%" height="100%" fill="#08050f"/>');
     const str = new XMLSerializer().serializeToString(clone);
@@ -321,7 +322,7 @@ function ArchitectureExport({ nodes }) {
 
   const exportPNG = async () => {
     const svgEl = document.querySelector('.dependency-graph-svg') || document.querySelector('svg');
-    if (!svgEl) { alert('No graph SVG found. Go to the Graph tab first.'); return; }
+    if (!svgEl) { toast.error('No graph SVG found. Go to the Graph tab first.'); return; }
     const clone = svgEl.cloneNode(true);
     clone.insertAdjacentHTML('afterbegin', '<rect width="100%" height="100%" fill="#08050f"/>');
     const str = new XMLSerializer().serializeToString(clone);
@@ -342,9 +343,9 @@ function ArchitectureExport({ nodes }) {
 
   const copyToClipboard = () => {
     const svgEl = document.querySelector('.dependency-graph-svg') || document.querySelector('svg');
-    if (!svgEl) { alert('No graph SVG found. Go to the Graph tab first.'); return; }
+    if (!svgEl) { toast.error('No graph SVG found. Go to the Graph tab first.'); return; }
     const str = new XMLSerializer().serializeToString(svgEl);
-    navigator.clipboard.writeText(str).then(() => alert('SVG copied to clipboard!')).catch(() => alert('Copy failed.'));
+    navigator.clipboard.writeText(str).then(() => toast.success('SVG copied to clipboard!')).catch(() => toast.error('Copy failed.'));
   };
 
   return (

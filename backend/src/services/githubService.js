@@ -179,6 +179,7 @@ const parseGitHubUrl = (rawUrl) => {
 };
 
 module.exports = {
+  octokit,
   parseGitHubUrl,
   getRepoDetails,
   getRepoFileTree,

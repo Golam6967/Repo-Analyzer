@@ -8,6 +8,7 @@ const {
   analyzeRepoController,
   getFileCommitsController,
   getChurnController,
+  getPRImpactController,
 } = require("../controllers/githubController");
 
 router.post("/parse", parseAndFetchController);
@@ -17,5 +18,6 @@ router.get("/file", getSingleFileController);
 router.post("/analyze", analyzeRepoController);
 router.get("/commits", getFileCommitsController);
 router.get("/churn", getChurnController);
+router.get("/pr-impact", getPRImpactController);
 
 module.exports = router;

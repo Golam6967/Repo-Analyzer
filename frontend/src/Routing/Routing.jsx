@@ -9,6 +9,7 @@ import GraphView from "../pages/GraphView";
 import VisualAnalysis from "../pages/VisualAnalysis";
 import MetricsDashboard from "../pages/MetricsDashboard";
 import DeveloperTools from "../pages/DeveloperTools";
+import PRImpactPage from "../pages/PRImpactPage";
 
 function ProtectedRoute({ children }) {
   const { isLoaded, isSignedIn } = useAuth();
@@ -35,6 +36,7 @@ const router = createBrowserRouter([
           { path: "visual",  element: <VisualAnalysis /> },
           { path: "metrics", element: <MetricsDashboard /> },
           { path: "tools",   element: <DeveloperTools /> },
+          { path: "impact",  element: <PRImpactPage /> },
         ],
       },
       {

@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 const { clerkMiddleware } = require("@clerk/express");
 const githubRoutes = require("./routes/githubRoutes");
 const webhookRoutes = require("./routes/webhook.routes");
@@ -16,6 +18,7 @@ const app = express();
 const allowedOrigins = ["http://localhost:3000", "http://localhost:5173"];
 if (process.env.FRONTEND_URL) allowedOrigins.push(process.env.FRONTEND_URL);
 
+app.use(helmet());
 app.use(
   cors({
     origin: allowedOrigins,
@@ -24,6 +27,14 @@ app.use(
   }),
 );
 app.use(morgan("dev"));
+
+const githubLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, message: "Too many requests, please wait a minute." },
+});
 
 // Webhooks need raw body before bodyParser
 app.use(
@@ -43,7 +54,7 @@ app.use(express.json());
 app.use(clerkMiddleware());
 
 app.use("/api/auth", authRoutes);
-app.use("/api/github", githubRoutes);
+app.use("/api/github", githubLimiter, githubRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/webhooks", webhookRoutes);
 app.use("/api/users", userRoutes);
