@@ -4,15 +4,15 @@ import { motion } from "framer-motion";
 import ErrorModal from "../components/ErrorModal";
 
 const field = {
-  label: { fontSize: 10, fontFamily: "'Space Mono', monospace", color: "var(--color-text-muted)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 6, display: "block" },
+  label: { fontSize: 10, fontFamily: "'IBM Plex Mono', monospace", color: "var(--color-text-muted)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 6, display: "block" },
   input: {
     width: "100%",
     padding: "10px 14px",
     background: "var(--color-background-secondary)",
     border: "1px solid var(--color-border-primary)",
-    borderRadius: 6,
+    borderRadius: 10,
     color: "var(--color-text-primary)",
-    fontFamily: "'Space Mono', monospace",
+    fontFamily: "'IBM Plex Mono', monospace",
     fontSize: 13,
     outline: "none",
     boxSizing: "border-box",
@@ -111,19 +111,19 @@ export default function Profile() {
       <motion.div custom={0} variants={fadeUp} initial="hidden" animate="show">
         <h1
           style={{
-            fontFamily: "'Rajdhani', sans-serif",
+            fontFamily: "'Inter', sans-serif",
             fontSize: "2.2rem",
             fontWeight: 700,
             textTransform: "uppercase",
             letterSpacing: "0.1em",
             color: "var(--ga)",
-            textShadow: "0 0 20px rgba(180,125,255,0.45)",
+            textShadow: "0 0 20px rgba(200,200,200,0.25)",
             marginBottom: 4,
           }}
         >
           Profile Settings
         </h1>
-        <p style={{ fontFamily: "'Space Mono', monospace", fontSize: 12, color: "rgba(255,255,255,0.3)", marginBottom: 36 }}>
+        <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: "rgba(255,255,255,0.3)", marginBottom: 36 }}>
           Manage your account details and avatar
         </p>
       </motion.div>
@@ -158,7 +158,7 @@ export default function Profile() {
               position: "absolute", inset: 0, background: "rgba(0,0,0,0.45)",
               display: "flex", alignItems: "center", justifyContent: "center",
               opacity: 0, transition: "opacity 0.15s",
-              fontFamily: "'Space Mono', monospace", fontSize: 10, color: "#fff",
+              fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: "#fff",
             }}
               onMouseEnter={(e) => (e.currentTarget.style.opacity = 1)}
               onMouseLeave={(e) => (e.currentTarget.style.opacity = 0)}
@@ -168,10 +168,10 @@ export default function Profile() {
           </div>
           <input ref={fileRef} type="file" accept="image/*" onChange={handleImageChange} style={{ display: "none" }} />
           <div>
-            <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 13, color: "var(--color-text-primary)", marginBottom: 4 }}>
+            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 13, color: "var(--color-text-primary)", marginBottom: 4 }}>
               {form.name || user?.fullName || "No name set"}
             </div>
-            <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 11, color: "var(--color-text-muted)" }}>
+            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: "var(--color-text-muted)" }}>
               {user?.primaryEmailAddress?.emailAddress}
             </div>
           </div>
@@ -229,17 +229,17 @@ export default function Profile() {
             style={{
               width: "100%",
               padding: "12px 0",
-              fontFamily: "'Rajdhani', sans-serif",
+              fontFamily: "'Inter', sans-serif",
               fontSize: 15,
               fontWeight: 700,
               letterSpacing: "0.1em",
               textTransform: "uppercase",
-              color: "#0a0018",
+              color: "#080808",
               background: saved ? "var(--color-text-success)" : "var(--ga)",
               border: "none",
-              borderRadius: 8,
+              borderRadius: 12,
               cursor: saving ? "wait" : "pointer",
-              boxShadow: `0 0 20px ${saved ? "rgba(90,255,184,0.4)" : "rgba(180,125,255,0.35)"}`,
+              boxShadow: `0 0 20px ${saved ? "rgba(74,222,128,0.3)" : "rgba(200,200,200,0.18)"}`,
               transition: "background 0.3s, box-shadow 0.3s",
             }}
           >

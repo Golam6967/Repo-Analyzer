@@ -24,6 +24,14 @@ const TABS = [
   { to: "/analyzer/impact",  label: "PR Impact"           },
 ];
 
+const TAB_ICONS = {
+  "Graph":     "◈",
+  "Visual":    "◉",
+  "Metrics":   "▦",
+  "Tools":     "⌥",
+  "PR Impact": "⊛",
+};
+
 const RepoAnalyzer = () => {
   const [repoUrl, setRepoUrl] = useState("");
   const [graphData, setGraphData] = useState(null);
@@ -135,42 +143,9 @@ const RepoAnalyzer = () => {
 
           {graphData && (
             <span className="analyzer-file-count">
-              {graphData.nodes?.length ?? 0} files detected
+              {graphData.nodes?.length ?? 0} files
             </span>
           )}
-
-          {/* Impact button — only on Graph tab */}
-          {graphData && (
-            <NavLink to="/analyzer" end style={{ textDecoration: "none" }}>
-              {({ isActive }) =>
-                isActive ? (
-                  <button
-                    className="analyzer-btn"
-                    onClick={(e) => { e.preventDefault(); setImpactOpen((o) => !o); setReviewOpen(false); setChatOpen(false); setDocsOpen(false); }}
-                    style={{ background: impactOpen ? "rgba(249,115,22,0.2)" : undefined, borderColor: impactOpen ? "#f97316" : undefined, color: impactOpen ? "#f97316" : undefined }}
-                  >
-                    {impactOpen ? "Close Impact" : "Impact"}
-                  </button>
-                ) : null
-              }
-            </NavLink>
-          )}
-
-          {/* ── Tab navigation ── */}
-          <div className="analyzer-nav-tabs" style={{ marginLeft: "auto" }}>
-            {TABS.map(({ to, label, end }) => (
-              <NavLink
-                key={to}
-                to={to}
-                end={end}
-                className={({ isActive }) => `analyzer-nav-tab${isActive ? " active" : ""}${!graphData && !end ? " disabled" : ""}`}
-                aria-disabled={!graphData && !end ? "true" : undefined}
-                onClick={e => { if (!graphData && !end) e.preventDefault(); }}
-              >
-                {label}
-              </NavLink>
-            ))}
-          </div>
         </div>
 
         <ErrorModal
@@ -178,6 +153,40 @@ const RepoAnalyzer = () => {
           onClose={() => setErrorOpen(false)}
           onRetry={() => { setErrorOpen(false); handleAnalyze(); }}
         />
+
+        {/* ── Tab bar — only shown after a repo is analyzed ── */}
+        {graphData && (
+          <div className="analyzer-tab-bar">
+            <div className="analyzer-tab-bar-links">
+              {TABS.map(({ to, label, end }) => (
+                <NavLink
+                  key={to}
+                  to={to}
+                  end={end}
+                  className={({ isActive }) => `analyzer-nav-tab${isActive ? " active" : ""}`}
+                >
+                  <span className="tab-icon">{TAB_ICONS[label]}</span>
+                  {label}
+                </NavLink>
+              ))}
+            </div>
+
+            {/* Impact toggle — only visible on Graph tab */}
+            <NavLink to="/analyzer" end style={{ textDecoration: "none" }}>
+              {({ isActive }) =>
+                isActive ? (
+                  <button
+                    className="tab-action-btn"
+                    onClick={(e) => { e.preventDefault(); setImpactOpen((o) => !o); setReviewOpen(false); setChatOpen(false); setDocsOpen(false); }}
+                    style={impactOpen ? { color: "#f97316", borderColor: "rgba(249,115,22,0.4)", background: "rgba(249,115,22,0.08)" } : {}}
+                  >
+                    {impactOpen ? "✕ Close Impact" : "⊙ Impact"}
+                  </button>
+                ) : null
+              }
+            </NavLink>
+          </div>
+        )}
 
         {/* ── Page content via Outlet ── */}
         <Outlet context={outletContext} />

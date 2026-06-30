@@ -141,6 +141,19 @@ const getChurnController = asyncHandler(async (req, res) => {
   res.json({ success: true, data: churnMap });
 });
 
+const postPRCommentController = asyncHandler(async (req, res) => {
+  const { repoUrl, pr, body } = req.body;
+  const parsed = parseGitHubUrl(repoUrl);
+  if (!parsed) { const err = new Error("Invalid repository URL"); err.statusCode = 400; throw err; }
+  const { owner, repo } = parsed;
+  const prNum = parseInt(pr, 10);
+  if (!prNum || prNum < 1) { const err = new Error("Invalid PR number"); err.statusCode = 400; throw err; }
+  if (!body || typeof body !== 'string' || !body.trim()) { const err = new Error("Comment body is required"); err.statusCode = 400; throw err; }
+
+  const { data } = await octokit.rest.issues.createComment({ owner, repo, issue_number: prNum, body });
+  res.json({ success: true, commentUrl: data.html_url });
+});
+
 const getPRImpactController = asyncHandler(async (req, res) => {
   const { repoUrl, pr } = req.query;
   const parsed = parseGitHubUrl(repoUrl);
@@ -194,4 +207,5 @@ module.exports = {
   getFileCommitsController,
   getChurnController,
   getPRImpactController,
+  postPRCommentController,
 };

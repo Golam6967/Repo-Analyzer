@@ -1,51 +1,51 @@
 /* Import global fonts */
-@import url("https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600;700&display=swap");
 
-/* ─── Ghost / Spectral Theme Variables ─────────────────────── */
+/* ─── Monochrome Professional Theme Variables ─────────────────────── */
 :root {
-  /* Purple-void scale  (g0 = deepest void, gb = lightest lavender) */
+  /* Monochrome scale  (g0 = deepest void, gb = lightest off-white) */
   --g0: #000000;
-  --g1: #050209;
-  --g2: #0c0518;
-  --g3: #140829;
-  --g4: #1e0d3c;
-  --g5: #2b1258;
-  --g6: #3a1a78;
-  --g7: #4f249e;
-  --g8: #6b33c4;
-  --g9: #8b4de0;
-  --ga: #b47dff;
-  --gb: #d4aaff;
+  --g1: #050505;
+  --g2: #0d0d0d;
+  --g3: #141414;
+  --g4: #1a1a1a;
+  --g5: #222222;
+  --g6: #2e2e2e;
+  --g7: #3a3a3a;
+  --g8: #555555;
+  --g9: #888888;
+  --ga: #c0c0c0;
+  --gb: #e0e0e0;
 
   /* Semantic colour tokens */
-  --color-background-primary:   #08050f;
-  --color-background-secondary: #100d1a;
-  --color-background-tertiary:  #181324;
-  --color-border-primary:       #2d2340;
-  --color-border-secondary:     #1e1830;
-  --color-border-tertiary:      #100d1a;
-  --color-text-primary:         #e8e0f5;
-  --color-text-secondary:       #8070a0;
-  --color-text-muted:           #4a3d60;
+  --color-background-primary:   #080808;
+  --color-background-secondary: #111111;
+  --color-background-tertiary:  #181818;
+  --color-border-primary:       #282828;
+  --color-border-secondary:     #1e1e1e;
+  --color-border-tertiary:      #111111;
+  --color-text-primary:         #d8d8d8;
+  --color-text-secondary:       #888888;
+  --color-text-muted:           #555555;
   --color-text-danger:          #ff4455;
-  --color-text-success:         #5affb8;
-  --color-accent:               #b47dff;
+  --color-text-success:         #4ade80;
+  --color-accent:               #c0c0c0;
 }
 
 body {
-  background: #08050f;
-  color: #e8e0f5;
+  background: #080808;
+  color: #d8d8d8;
 }
 
 /* Welcome Page Layout */
 .welcome-container {
   min-height: 100vh;
   background:
-    radial-gradient(ellipse at 30% 20%, rgba(107,51,196,0.25) 0%, transparent 55%),
-    radial-gradient(ellipse at 70% 80%, rgba(43,18,88,0.30) 0%, transparent 55%),
-    radial-gradient(circle at center, #0c0518 0%, #050209 65%, #000000 100%);
-  color: white;
-  font-family: "Rajdhani", sans-serif;
+    radial-gradient(ellipse at 30% 20%, rgba(60,60,60,0.18) 0%, transparent 55%),
+    radial-gradient(ellipse at 70% 80%, rgba(30,30,30,0.22) 0%, transparent 55%),
+    radial-gradient(circle at center, #0d0d0d 0%, #050505 65%, #000000 100%);
+  color: #d8d8d8;
+  font-family: "Inter", sans-serif;
   position: relative;
   overflow: hidden;
 }
@@ -68,15 +68,15 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.1em;
   text-shadow:
-    0 0 30px rgba(180,125,255,0.7),
-    0 0 60px rgba(107,51,196,0.4);
+    0 0 30px rgba(200,200,200,0.3),
+    0 0 60px rgba(120,120,120,0.15);
   margin-bottom: 1rem;
-  color: var(--ga);
+  color: var(--gb);
 }
 
 .welcome-subtitle {
   font-size: 1.2rem;
-  color: rgba(212,170,255,0.5);
+  color: rgba(200,200,200,0.45);
   max-width: 600px;
-  font-family: "Space Mono", monospace;
+  font-family: "IBM Plex Mono", monospace;
 }

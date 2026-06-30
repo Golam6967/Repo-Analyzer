@@ -108,9 +108,9 @@ export default function Navbar() {
         ref={navRef}
         className="navbar-3d"
         style={{
-          background: "linear-gradient(180deg, rgba(20,8,41,0.94) 0%, rgba(5,2,9,0.97) 100%)",
-          backdropFilter: "blur(24px) saturate(160%)",
-          WebkitBackdropFilter: "blur(24px) saturate(160%)",
+          background: "linear-gradient(180deg, rgba(20,20,20,0.94) 0%, rgba(5,5,5,0.97) 100%)",
+          backdropFilter: "blur(24px) saturate(120%)",
+          WebkitBackdropFilter: "blur(24px) saturate(120%)",
         }}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
@@ -166,7 +166,7 @@ export default function Navbar() {
                   avatarBox: { width: 32, height: 32 },
                   userButtonPopoverCard: {
                     background: "var(--g3)",
-                    border: "1px solid rgba(180,125,255,0.22)",
+                    border: "1px solid rgba(200,200,200,0.16)",
                   },
                 },
               }}

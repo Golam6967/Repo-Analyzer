@@ -1,0 +1,67 @@
+name: PR Impact Analysis
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  impact-analysis:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: Fetch PR impact data
+        id: impact
+        run: |
+          RESPONSE=$(curl -s \
+            "${{ secrets.HOVERBOARD_API_URL }}/api/github/pr-impact?repoUrl=${{ github.event.repository.html_url }}&pr=${{ github.event.pull_request.number }}")
+          echo "response=$RESPONSE" >> $GITHUB_OUTPUT
+          CHANGED=$(echo "$RESPONSE" | jq '.data.changedFiles | length')
+          ADDITIONS=$(echo "$RESPONSE" | jq '.data.totalAdditions')
+          DELETIONS=$(echo "$RESPONSE" | jq '.data.totalDeletions')
+          echo "changed=$CHANGED" >> $GITHUB_OUTPUT
+          echo "additions=$ADDITIONS" >> $GITHUB_OUTPUT
+          echo "deletions=$DELETIONS" >> $GITHUB_OUTPUT
+
+      - name: Post impact comment
+        uses: actions/github-script@v7
+        env:
+          HOVERBOARD_URL: ${{ secrets.HOVERBOARD_API_URL }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO_URL: ${{ github.event.repository.html_url }}
+          CHANGED: ${{ steps.impact.outputs.changed }}
+          ADDITIONS: ${{ steps.impact.outputs.additions }}
+          DELETIONS: ${{ steps.impact.outputs.deletions }}
+        with:
+          script: |
+            const prNum = process.env.PR_NUMBER;
+            const repoUrl = process.env.REPO_URL;
+            const changed = process.env.CHANGED || '?';
+            const additions = process.env.ADDITIONS || '?';
+            const deletions = process.env.DELETIONS || '?';
+            const appUrl = process.env.HOVERBOARD_URL
+              ? process.env.HOVERBOARD_URL.replace('/api', '')
+              : 'your-hoverboard-url';
+
+            const body = [
+              '## 🔍 PR Impact Analysis',
+              '',
+              `| Metric | Value |`,
+              `|---|---|`,
+              `| Files changed | ${changed} |`,
+              `| Lines added | +${additions} |`,
+              `| Lines removed | -${deletions} |`,
+              '',
+              '**Full blast radius analysis available in Hoverboard:**',
+              `→ [Open in Hoverboard](${appUrl}/analyzer) — analyze the repo, then go to **PR Impact** tab and enter PR #${prNum}`,
+              '',
+              '_Automated by [Hoverboard](https://github.com) Repo Visualizer_',
+            ].join('\n');
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: parseInt(prNum),
+              body,
+            });

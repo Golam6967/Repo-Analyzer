@@ -11,9 +11,9 @@ export default function Welcome() {
     <div
       style={{
         minHeight: "100vh",
-        background: "radial-gradient(ellipse at 30% 20%, rgba(107,51,196,0.25) 0%, transparent 55%), radial-gradient(ellipse at 70% 80%, rgba(43,18,88,0.3) 0%, transparent 55%), radial-gradient(circle at center, #0c0518 0%, #050209 65%, #000000 100%)",
-        color: "white",
-        fontFamily: "'Rajdhani', sans-serif",
+        background: "radial-gradient(ellipse at 30% 20%, rgba(60,60,60,0.18) 0%, transparent 55%), radial-gradient(ellipse at 70% 80%, rgba(30,30,30,0.22) 0%, transparent 55%), radial-gradient(circle at center, #0d0d0d 0%, #050505 65%, #000000 100%)",
+        color: "#d8d8d8",
+        fontFamily: "'Inter', sans-serif",
         position: "relative",
         overflow: isAnalyzer ? "hidden" : "auto",
       }}
@@ -27,7 +27,7 @@ export default function Welcome() {
                 // full-screen for the graph
                 position: "fixed",
                 inset: 0,
-                top: 72,
+                top: 58,
                 display: "flex",
                 flexDirection: "column",
               }
